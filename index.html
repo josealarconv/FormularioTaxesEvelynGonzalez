@@ -6,13 +6,20 @@
   <title>Preparación de Impuestos</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
   
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.24.4/babel.min.js"></script>
+  
+  <script>
+    Babel.registerPreset("react-seguro", {
+      presets: [
+        [Babel.availablePresets["react"], { runtime: "classic" }]
+      ]
+    });
+  </script>
   
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
@@ -26,7 +33,7 @@
   
   <div id="root"></div>
 
-  <script type="text/babel">
+  <script type="text/babel" data-presets="react-seguro">
     const { useState, useEffect, useRef } = React;
 
     // =========================================================
@@ -37,7 +44,7 @@
       companyName: "EMPOWERTECH SOLUTIONS CORP",         
       headerLogoUrl: "https://i.postimg.cc/kMpPD83R/Logo-(Icono).png", 
       footerLogoUrl: "https://i.postimg.cc/6qQj2XSd/Logo_Evelyn_Gonzalez_Usa_(Vertical).png",
-      backendUrl: "https://script.google.com/macros/s/AKfycbwIS0_AVH2yzlZw1Gegv496PTU_Fc962L9qCyK-BxSEVtXgk6ebbYcWAc76ASVS7agiKA/exec", 
+      backendUrl: "https://script.google.com/macros/s/AKfycbwIS0_AVH2yzlZw1Gegv496PTU_Fc962L9qCyK-BxSEVtXgk6ebbYcWAc76ASVS7agiKA/exec",
       primaryColor: "#172A45" // Azul corporativo
     };
 
@@ -423,7 +430,7 @@
           ssnNumero: '', ssnDoc: null, tipoId: '', idDoc: null, esResidente: '', permisoDoc: null
         },
         conyuge: {
-          declaroAnterior: '', forma1040Doc: null, // Agregado para cónyuge
+          declaroAnterior: '', forma1040Doc: null,
           nombres: '', apellidos: '', dob: '', direccion: '', telefono: '', correo: '',
           ssnNumero: '', ssnDoc: null, tipoId: '', idDoc: null, esResidente: '', permisoDoc: null
         },
@@ -479,7 +486,7 @@
         ctx.lineWidth = 3;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
-        ctx.strokeStyle = CONFIG.primaryColor; // Usa el color corporativo para la firma
+        ctx.strokeStyle = CONFIG.primaryColor; 
         setIsDrawing(true);
       };
 
@@ -617,7 +624,7 @@
         
         // Cónyuge
         if (formData.titular.estadoCivil === 'Casado') {
-          if (formData.conyuge.declaroAnterior === 'Si') await processFile(formData.conyuge.forma1040Doc, 'Conyuge_1040_Anterior'); // Agregado 1040 cónyuge
+          if (formData.conyuge.declaroAnterior === 'Si') await processFile(formData.conyuge.forma1040Doc, 'Conyuge_1040_Anterior');
           await processFile(formData.conyuge.ssnDoc, 'Conyuge_SSN_ITIN');
           if (formData.conyuge.tipoId && formData.conyuge.tipoId !== 'No tiene') await processFile(formData.conyuge.idDoc, `Conyuge_ID_${formData.conyuge.tipoId}`);
           if (formData.conyuge.esResidente === 'No') await processFile(formData.conyuge.permisoDoc, 'Conyuge_Permiso_Trabajo');
